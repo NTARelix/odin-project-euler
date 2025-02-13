@@ -134,6 +134,26 @@ solution6 :: proc() -> u64 {
     return square_of_sum(max) - sum_of_squares(max)
 }
 
+solution7 :: proc() -> u64 {
+    prime_cache := new(map[u64]struct{})
+    prime_cache[2] = {}
+    for num: u64 = 3;; num += 2 {
+        is_divisible_by_prime := false
+        for prime in prime_cache {
+            if num % prime == 0 {
+                is_divisible_by_prime = true
+                break
+            }
+        }
+        if !is_divisible_by_prime {
+            prime_cache[num] = {}
+            if len(prime_cache) == 10001 {
+                return num
+            }
+        }
+    }
+}
+
 main :: proc() {
     solutions := []proc() -> u64{
         solution1,
@@ -142,6 +162,7 @@ main :: proc() {
         solution4,
         solution5,
         solution6,
+        solution7,
     }
     stopwatch: time.Stopwatch
     for solution, i in solutions {
