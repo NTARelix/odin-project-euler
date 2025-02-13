@@ -96,9 +96,26 @@ solution4 :: proc() -> u64 {
     return largest_palindrome_product
 }
 
+solution5 :: proc() -> u64 {
+    max_factor: u64 : 20
+    for potential_multiple := max_factor;; potential_multiple += max_factor {
+        all_divisible := true
+        for divisor in 1..=max_factor {
+            if potential_multiple % divisor != 0 {
+                all_divisible = false
+                break
+            }
+        }
+        if all_divisible {
+            return potential_multiple
+        }
+    }
+}
+
 main :: proc() {
     fmt.printfln("Solution 1: %i", solution1())
     fmt.printfln("Solution 2: %i", solution2())
     fmt.printfln("Solution 3: %i", solution3())
     fmt.printfln("Solution 4: %i", solution4())
+    fmt.printfln("Solution 5: %i", solution5())
 }
