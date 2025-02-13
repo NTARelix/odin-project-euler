@@ -2,6 +2,7 @@ package main
 
 import "core:fmt"
 import "core:math/linalg"
+import "core:time"
 
 count_digits :: proc(num: u64) -> u8 {
     for digits: u8 = 0; digits < max(u8); digits += 1 {
@@ -113,9 +114,20 @@ solution5 :: proc() -> u64 {
 }
 
 main :: proc() {
-    fmt.printfln("Solution 1: %i", solution1())
-    fmt.printfln("Solution 2: %i", solution2())
-    fmt.printfln("Solution 3: %i", solution3())
-    fmt.printfln("Solution 4: %i", solution4())
-    fmt.printfln("Solution 5: %i", solution5())
+    solutions := []proc() -> u64{
+        solution1,
+        solution2,
+        solution3,
+        solution4,
+        solution5,
+    }
+    stopwatch: time.Stopwatch
+    for solution, i in solutions {
+        time.stopwatch_reset(&stopwatch)
+        time.stopwatch_start(&stopwatch)
+        result := solution()
+        time.stopwatch_stop(&stopwatch)
+        dur_ms := cast(f64)time.stopwatch_duration(stopwatch) / cast(f64)time.Millisecond
+        fmt.printfln("Solution %i (%f ms): %i", i + 1, dur_ms, result)
+    }
 }
