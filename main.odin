@@ -28,6 +28,22 @@ is_palindrome :: proc(num: u64) -> bool {
     return true
 }
 
+sum_of_squares :: proc(max: u64) -> u64 {
+    sum: u64 = 0
+    for n in 1..=max {
+        sum += cast(u64)linalg.pow(cast(f64)n, 2)
+    }
+    return sum
+}
+
+square_of_sum :: proc(max: u64) -> u64 {
+    sum: u64 = 0
+    for n in 1..=max {
+        sum += n
+    }
+    return cast(u64)linalg.pow(cast(f64)sum, 2)
+}
+
 // https:\/\/projecteuler.net/problem=1
 solution1 :: proc() -> u64 {
     sum: u64 = 0
@@ -113,6 +129,11 @@ solution5 :: proc() -> u64 {
     }
 }
 
+solution6 :: proc() -> u64 {
+    max: u64 : 100
+    return square_of_sum(max) - sum_of_squares(max)
+}
+
 main :: proc() {
     solutions := []proc() -> u64{
         solution1,
@@ -120,6 +141,7 @@ main :: proc() {
         solution3,
         solution4,
         solution5,
+        solution6,
     }
     stopwatch: time.Stopwatch
     for solution, i in solutions {
