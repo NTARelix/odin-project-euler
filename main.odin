@@ -9,17 +9,20 @@ import "core:time"
 import "solutions"
 
 @(private)
-run_solution :: proc(num: int, solution: proc() -> u64) {
+run_solution :: proc(ctx: ^solutions.RunContext, num: u64, solution: proc(^solutions.RunContext) -> u64) {
+    if ctx.solution_to_run != 0 && num != ctx.solution_to_run {
+        return
+    }
     stopwatch: time.Stopwatch
     time.stopwatch_start(&stopwatch)
-    result := solution()
+    result := solution(ctx)
     time.stopwatch_stop(&stopwatch)
     dur_ms := cast(f64)time.stopwatch_duration(stopwatch) / cast(f64)time.Millisecond
     fmt.printfln("Solution %i (%f ms): %i", num, dur_ms, result)
 }
 
 main :: proc() {
-    solutions := []proc() -> u64{
+    all_solutions := []proc(^solutions.RunContext) -> u64{
         solutions.s01,
         solutions.s02,
         solutions.s03,
@@ -35,24 +38,24 @@ main :: proc() {
         solutions.s13,
         solutions.s14,
     }
-    if len(os.args) >= 2 {
+    ctx: solutions.RunContext = {
+        solution_to_run = 0,
+    }
+    for arg in os.args[1:] {
         solution_to_run: int
-        if parsed, ok := strconv.parse_int(os.args[1]); ok {
+        if parsed, ok := strconv.parse_int(arg); ok {
             solution_to_run = parsed
+            if solution_to_run > 0 {
+                ctx.solution_to_run = cast(u64)solution_to_run
+            } else if solution_to_run < 0 {
+                ctx.solution_to_run = cast(u64)(len(all_solutions) + solution_to_run + 1)
+            }
         } else {
             fmt.printfln("failed to parse first parameter as int: %s", os.args[1])
             return
         }
-        i: int
-        if solution_to_run > 0 {
-            i = solution_to_run - 1
-        } else if solution_to_run < 0 {
-            i = len(solutions) + solution_to_run
-        }
-        run_solution(i + 1, solutions[i])
-    } else {
-        for i in 0..<len(solutions) {
-            run_solution(i + 1, solutions[i])
-        }
+    }
+    for i in 0..<len(all_solutions) {
+        run_solution(&ctx, cast(u64)i + 1, all_solutions[i])
     }
 }

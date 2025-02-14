@@ -2,7 +2,7 @@ package solutions
 
 import "core:math/linalg"
 
-s09 :: proc() -> u64 {
+s09 :: proc(ctx: ^RunContext) -> u64 {
     for a in cast(u64)0..=1000 {
         a2 := cast(u64)linalg.pow(cast(f64)a, auto_cast 2)
         for b in cast(u64)(a + 1)..=(1000 - a) {

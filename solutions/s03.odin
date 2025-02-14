@@ -1,7 +1,7 @@
 package solutions
 
 // https:\/\/projecteuler.net/problem=3
-s03 :: proc() -> u64 {
+s03 :: proc(ctx: ^RunContext) -> u64 {
     largest_prime_factor: u64 = 600851475143
     was_divided: bool = true // technically not true, but we need this to get into the loop
     for was_divided {

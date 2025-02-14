@@ -1,6 +1,6 @@
 package solutions
 
-s14 :: proc() -> u64 {
+s14 :: proc(ctx: ^RunContext) -> u64 {
     longest_sequence_starting_number: u64 = 1
     longest_sequence_size: u64 = 1
     for starting_number in cast(u64)2..=1_000_000 {

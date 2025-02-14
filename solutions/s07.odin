@@ -1,6 +1,6 @@
 package solutions
 
-s07 :: proc() -> u64 {
+s07 :: proc(ctx: ^RunContext) -> u64 {
     prime_cache: [dynamic]u64
     append(&prime_cache, 2)
     for num: u64 = 3;; num += 2 {

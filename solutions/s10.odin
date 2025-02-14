@@ -1,6 +1,6 @@
 package solutions
 
-s10 :: proc() -> u64 {
+s10 :: proc(ctx: ^RunContext) -> u64 {
     prime_cache: [dynamic]u64
     append(&prime_cache, 2)
     // find primes

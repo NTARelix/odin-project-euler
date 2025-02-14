@@ -1,6 +1,6 @@
 package solutions
 
-s12 :: proc() -> u64 {
+s12 :: proc(ctx: ^RunContext) -> u64 {
     min_divisor_count :: 500
     triangle_num: u64 = 0
     for n: u64 = 0;; n += 1 {

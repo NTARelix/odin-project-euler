@@ -20,7 +20,7 @@ square_of_sum :: proc(max: u64) -> u64 {
     return cast(u64)linalg.pow(cast(f64)sum, 2)
 }
 
-s06 :: proc() -> u64 {
+s06 :: proc(ctx: ^RunContext) -> u64 {
     max: u64 : 100
     return square_of_sum(max) - sum_of_squares(max)
 }

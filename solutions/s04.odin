@@ -29,7 +29,7 @@ is_palindrome :: proc(num: u64) -> bool {
 }
 
 // https:\/\/projecteuler.net/problem=4
-s04 :: proc() -> u64 {
+s04 :: proc(ctx: ^RunContext) -> u64 {
     max: u64 : 999
     min: u64 : 100
     largest_palindrome_product: u64 = 0

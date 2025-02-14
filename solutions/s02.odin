@@ -1,7 +1,7 @@
 package solutions
 
 // https:\/\/projecteuler.net/problem=2
-s02 :: proc() -> u64 {
+s02 :: proc(ctx: ^RunContext) -> u64 {
     prev: u64 = 1
     curr: u64 = 2
     sum: u64 = 0
