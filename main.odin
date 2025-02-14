@@ -2,6 +2,8 @@ package main
 
 import "core:fmt"
 import "core:math/linalg"
+import "core:os"
+import "core:strconv"
 import "core:strings"
 import "core:time"
 
@@ -136,8 +138,8 @@ solution6 :: proc() -> u64 {
 }
 
 solution7 :: proc() -> u64 {
-    prime_cache := new(map[u64]struct{})
-    prime_cache[2] = {}
+    prime_cache: [dynamic]u64
+    append(&prime_cache, 2)
     for num: u64 = 3;; num += 2 {
         is_divisible_by_prime := false
         for prime in prime_cache {
@@ -147,7 +149,7 @@ solution7 :: proc() -> u64 {
             }
         }
         if !is_divisible_by_prime {
-            prime_cache[num] = {}
+            append(&prime_cache, num)
             if len(prime_cache) == 10001 {
                 return num
             }
@@ -215,6 +217,15 @@ solution10 :: proc() -> u64 {
     return sum
 }
 
+run_solution :: proc(num: int, solution: proc() -> u64) {
+    stopwatch: time.Stopwatch
+    time.stopwatch_start(&stopwatch)
+    result := solution()
+    time.stopwatch_stop(&stopwatch)
+    dur_ms := cast(f64)time.stopwatch_duration(stopwatch) / cast(f64)time.Millisecond
+    fmt.printfln("Solution %i (%f ms): %i", num, dur_ms, result)
+}
+
 main :: proc() {
     solutions := []proc() -> u64{
         solution1,
@@ -228,13 +239,24 @@ main :: proc() {
         solution9,
         solution10,
     }
-    stopwatch: time.Stopwatch
-    for solution, i in solutions {
-        time.stopwatch_reset(&stopwatch)
-        time.stopwatch_start(&stopwatch)
-        result := solution()
-        time.stopwatch_stop(&stopwatch)
-        dur_ms := cast(f64)time.stopwatch_duration(stopwatch) / cast(f64)time.Millisecond
-        fmt.printfln("Solution %i (%f ms): %i", i + 1, dur_ms, result)
+    if len(os.args) >= 2 {
+        solution_to_run: int
+        if parsed, ok := strconv.parse_int(os.args[1]); ok {
+            solution_to_run = parsed
+        } else {
+            fmt.printfln("failed to parse first parameter as int: %s", os.args[1])
+            return
+        }
+        i: int
+        if solution_to_run > 0 {
+            i = solution_to_run - 1
+        } else if solution_to_run < 0 {
+            i = len(solutions) + solution_to_run
+        }
+        run_solution(i + 1, solutions[i])
+    } else {
+        for i in 0..<len(solutions) {
+            run_solution(i + 1, solutions[i])
+        }
     }
 }
