@@ -10,10 +10,10 @@ To run all:
 odin run .
 ```
 
-To run last:
+To run last with debug logging:
 
 ```bash
-odin run . -- -1
+odin run . -- -1 -d
 ```
 
 To run 5th (or any other solution by number):

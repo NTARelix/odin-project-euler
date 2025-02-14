@@ -50,6 +50,8 @@ main :: proc() {
             } else if solution_to_run < 0 {
                 ctx.solution_to_run = cast(u64)(len(all_solutions) + solution_to_run + 1)
             }
+        } else if arg == "-d" || arg == "--debug" {
+            ctx.debug = true
         } else {
             fmt.printfln("failed to parse first parameter as int: %s", os.args[1])
             return
