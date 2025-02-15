@@ -39,6 +39,7 @@ main :: proc() {
         solutions.s14,
         solutions.s15,
         solutions.s16,
+        solutions.s17,
     }
     ctx: solutions.RunContext = {
         solution_to_run = 0,
